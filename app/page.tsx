@@ -52,6 +52,11 @@ export default function Home() {
           <span className="rounded-full border border-white/10 bg-white/[0.035] px-4 py-2">Rental Yield</span>
           <span className="rounded-full border border-white/10 bg-white/[0.035] px-4 py-2">Risk Analysis</span>
         </div>
+
+        <a href="#score-form" className="eix-button mx-auto mt-8 flex max-w-sm items-center justify-center no-underline">
+          Get My Property Score™
+        </a>
+        <p className="mt-3 text-xs text-slate-500">Founding 25 complimentary · Beta thereafter R149</p>
       </section>
 
       <section className="relative z-10 max-w-7xl mx-auto px-6 pb-24">
@@ -80,11 +85,11 @@ export default function Home() {
               <div>
                 <div className="text-xs font-semibold uppercase tracking-[0.18em] text-[#00C48C]">Property analysis</div>
                 <h2 className="mt-2 text-2xl sm:text-3xl font-bold text-white">Analyze this property</h2>
-                <p className="mt-2 text-sm text-slate-400">Get your preliminary Property Score™.</p>
+                <p className="mt-2 text-sm text-slate-400">One property. One decision-ready report.</p>
               </div>
               <div className="hidden sm:block rounded-2xl border border-[#D4AF37]/20 bg-[#D4AF37]/[0.06] px-3 py-2 text-right">
-                <div className="text-[9px] uppercase tracking-widest text-[#D4AF37]">Founding</div>
-                <div className="text-xs font-bold text-white">25 Free</div>
+                <div className="text-[9px] uppercase tracking-widest text-[#D4AF37]">Beta</div>
+                <div className="text-xs font-bold text-white">R149</div>
               </div>
             </div>
 
@@ -115,13 +120,18 @@ export default function Home() {
           <div className="mt-6 text-xs uppercase tracking-[0.22em] text-[#D4AF37] font-semibold">Founding Investor Access</div>
           <h2 className="mt-4 text-3xl sm:text-5xl font-black tracking-tight text-white">Be one of the first 25.</h2>
           <p className="mt-5 max-w-2xl mx-auto text-base leading-7 text-slate-400">
-            Submit a property during the Beta and receive a professional AI Investment Report within 24 hours.
+            Founding investors receive complimentary access. After the founding allocation, the Beta report is R149 per property.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3 text-xs text-slate-400">
-            <span>Property analysis</span><span>·</span><span>Investment Score™</span><span>·</span><span>AI report</span>
+            <span>Investment Score™</span><span>·</span><span>Cash flow</span><span>·</span><span>Rental yield</span><span>·</span><span>Risk analysis</span>
           </div>
+          <a href="#score-form" className="eix-button mx-auto mt-9 flex max-w-md items-center justify-center no-underline">
+            Claim My Property Score™
+          </a>
         </div>
       </section>
+
+      <CTASection />
 
       <footer className="relative z-10 border-t border-white/[0.07] py-8 text-center text-xs text-slate-600">
         <p>EiX Property Score™ · ENTRPRNRiX AI (Pty) Ltd</p>
