@@ -10,7 +10,8 @@ export default function PropertyScoreForm() {
   const [listingUrl, setListingUrl] = useState("");
   const [price, setPrice] = useState(2100000);
   const [rent, setRent] = useState(16000);
-  const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
   const result = calculateInvestmentScore({
     purchasePrice: price,
@@ -20,35 +21,40 @@ export default function PropertyScoreForm() {
     termYears: 20,
   });
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setSubmitted(true);
-  }
+    setSubmitting(true);
+    setError("");
 
-  if (submitted) {
-    return (
-      <div id="score-form" className="glass rounded-[36px] p-8">
-        <div className="mb-6 inline-flex rounded-full border border-[#00C48C]/20 bg-[#00C48C]/10 px-3 py-1 text-xs font-bold uppercase tracking-[0.16em] text-[#00E0A0]">
-          Request ready
-        </div>
-        <h2 className="text-3xl font-bold text-white">Your property is queued.</h2>
-        <p className="mt-3 leading-7 text-slate-300">
-          We have your property details. The EiX Property Score™ Beta report is prepared for one property and delivered within 24 hours.
-        </p>
-        <div className="mt-6 rounded-2xl border border-white/10 bg-[#0B1220]/80 p-5">
-          <div className="flex items-center justify-between gap-4">
-            <div>
-              <p className="text-sm font-semibold text-white">Beta Property Report</p>
-              <p className="mt-1 text-sm text-slate-400">Founding 25 complimentary · Beta thereafter R149</p>
-            </div>
-            <span className="text-xl font-black text-[#00E0A0]">R149</span>
-          </div>
-        </div>
-        <p className="mt-5 text-xs leading-5 text-slate-500">
-          Payment is the next step. No subscription. One property per report. Not financial advice.
-        </p>
-      </div>
-    );
+    try {
+      const response = await fetch("/api/payfast", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ fullName, email, whatsapp, listingUrl, price, rent }),
+      });
+
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "Unable to start checkout.");
+
+      const form = document.createElement("form");
+      form.method = "POST";
+      form.action = data.checkoutUrl;
+      form.style.display = "none";
+
+      Object.entries(data.fields as Record<string, string>).forEach(([key, value]) => {
+        const input = document.createElement("input");
+        input.type = "hidden";
+        input.name = key;
+        input.value = value;
+        form.appendChild(input);
+      });
+
+      document.body.appendChild(form);
+      form.submit();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Unable to start checkout. Please try again.");
+      setSubmitting(false);
+    }
   }
 
   return (
@@ -102,11 +108,17 @@ export default function PropertyScoreForm() {
           <p className="mt-1 text-xs text-slate-500">Founding 25 receive complimentary access.</p>
         </div>
 
-        <button type="submit" className="eix-button">
-          Get My Property Score™
+        {error && (
+          <div role="alert" className="rounded-2xl border border-red-400/20 bg-red-400/10 px-4 py-3 text-sm text-red-200">
+            {error}
+          </div>
+        )}
+
+        <button type="submit" className="eix-button" disabled={submitting}>
+          {submitting ? "Opening secure checkout…" : "Get My Property Score™ · R149"}
         </button>
         <p className="text-center text-xs leading-5 text-slate-500">
-          No subscription · Report within 24 hours · Not financial advice
+          Secure PayFast checkout · No subscription · Report within 24 hours · Not financial advice
         </p>
       </form>
 
